@@ -13,29 +13,7 @@ public class AVLTree{
             this.element = element;
         }
 
-        public AVLNode getLeft() {
-            return left;
-        }
-
-        public void setLeft(AVLNode left) {
-            this.left = left;
-        }
-
-        public AVLNode getRight() {
-            return right;
-        }
-
-        public void setRight(AVLNode right) {
-            this.right = right;
-        }
-
-        public AVLNode getParent() {
-            return parent;
-        }
-
-        public void setParent(AVLNode parent) {
-            this.parent = parent;
-        }
+       
     }
     
     private int count;
@@ -82,5 +60,38 @@ public class AVLTree{
         }
     }
 
+    public Integer getParent(Integer element){
+       AVLNode aux = searchNode(element, root);
+
+       if (aux == null) {
+        return null;
+       }
+
+       if(aux.left == null){
+        return null;
+       }
+
+       if (aux.right == null) {
+            return null;
+       }
     
+       return aux.element;
+
+    }
+
+    public int height(){
+        return calculoHeight(root);
+    }
+
+    private int calculoHeight(AVLNode n){
+        if (n == null) {
+            return 1;
+        }
+
+        int alturaLeft = calculoHeight(n.left);
+        int alturaRight = calculoHeight(n.right);
+        return 1+ Math.max(alturaLeft, alturaRight);
+
+      
+    }
 }
