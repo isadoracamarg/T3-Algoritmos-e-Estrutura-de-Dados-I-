@@ -149,12 +149,17 @@ public class AVLTree{
 
     private int calculoHeight (Node n){
         if (n == null) {
-            return 1;
+            return 0;
         }
-
-        int alturaLeft = calculoHeight(n.left);
-        int alturaRight = calculoHeight(n.right);
-        return 1+ Math.max(alturaLeft, alturaRight);
+        int alturaLeft = 0;
+        if(n.left != null && n.right == null){
+            alturaLeft = 1 + calculoHeight(n.left);
+        }
+        int alturaRight = 0;
+        if(n.left == null && n.right != null){
+            alturaRight = 1 + calculoHeight(n.right);
+        }
+        return alturaLeft + alturaRight;
     }
 
     /**
