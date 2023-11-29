@@ -32,7 +32,7 @@ public class App {
         System.out.println("Contém 10? " + a.contains(10));
         
         AVLTree clone = a.clone();
-        System.out.println("Altura do clone: " + a.height());
+        System.out.println("\nAltura do clone: " + a.height());
         clone.GeraDOT(); 
      }
 }
