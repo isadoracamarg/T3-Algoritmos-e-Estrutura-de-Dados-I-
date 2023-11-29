@@ -26,6 +26,7 @@ public class AVLTree{
     }
 
     /**
+     * Complexidade: O(log n)
      * Adiciona um novo elemento na árvore.
      * @param element elemento que será adicionado.
      */
@@ -127,6 +128,7 @@ public class AVLTree{
     }
 
     /**
+     * Complexidade: O(log n)
      * Método que verifica se a árvore possui um determinado elemento.
      * @param elem elemento que será buscado.
      * @return "true" se a árvore possuir "elem" e "false" se não.
@@ -141,6 +143,7 @@ public class AVLTree{
     }
 
     /**
+     * Complexidade: O(n)
      * Método que retorna a altura (nível mais alto) da árvore.
      * @return a altura da árvore.
      */
@@ -324,6 +327,7 @@ public class AVLTree{
     }
 
     /**
+     * Complexidade: O(n)
      * Método que faz uma cópia da árvore.
      * @return uma cópia da árvore.
      */
