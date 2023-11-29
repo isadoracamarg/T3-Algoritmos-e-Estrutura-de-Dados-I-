@@ -194,28 +194,27 @@ public class AVLTree{
         if(n.right != null){
             n.right= verificaBalanceamento(n.right);
         }
-        calculaBalanceamento(n);
         if(n.left != null){
             n.left= verificaBalanceamento(n.left);
         }
         calculaBalanceamento(n);
         if (n.balance >= 2 || n.balance <= -2) {
-            if (n.balance >= 2) {
-                if (n.balance * n.right.balance > 0) {
-                    return rotacaoSimplesDireita(n);
+            if (Math.abs(n.balance) >= 2) {
+                if (n.balance > 0) {
+                    if (n.right != null && n.right.balance >= 0) {
+                        return rotacaoSimplesDireita(n);
+                    } else {
+                        return rotacaoDuplaDireita(n);
+                    }
                 } else {
-                    return rotacaoDuplaDireita(n);
+                    if (n.left != null && n.left.balance <= 0) {
+                        return rotacaoSimplesEsquerda(n);
+                    } else {
+                        return rotacaoDuplaEsquerda(n);
+                    }
                 }
             }
-        } else {
-            if (n.balance <= -2) {
-                if (n.balance * n.left.balance > 0) {
-                    return rotacaoSimplesEsquerda(n);
-                } else {
-                    return rotacaoDuplaEsquerda(n);
-                }
-            }
-        }
+        }            
         return n;
     }
 

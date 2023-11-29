@@ -25,14 +25,9 @@ public class App {
         a.add(2);
         a.add(1);
 
-        System.out.println(a.positionsCentral());
-
-        System.out.println("Contem 1? " + a.contains(1));
-        System.out.println("Contem 9? " + a.contains(9));
-        System.out.println("Contem 10? " + a.contains(10));
+        System.out.println("Elementos da árvore: \n" + a.positionsCentral());
         
         AVLTree clone = a.clone();
-        System.out.println("Altura do clone: " + clone.height());
         clone.GeraDOT(); 
      }
 }
