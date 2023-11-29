@@ -191,16 +191,15 @@ public class AVLTree{
         if (n == null) {
             return null;
         }
-        if(n.right != null){
+        if (n.right != null){
             n.right= verificaBalanceamento(n.right);
         }
-        if(n.left != null){
+        if (n.left != null){
             n.left= verificaBalanceamento(n.left);
         }
         calculaBalanceamento(n);
         if (n.balance >= 2 || n.balance <= -2) {
-            if (Math.abs(n.balance) >= 2) {
-                if (n.balance > 0) {
+            if (n.balance > 0) {
                     if (n.right != null && n.right.balance >= 0) {
                         return rotacaoSimplesDireita(n);
                     } else {
@@ -213,7 +212,7 @@ public class AVLTree{
                         return rotacaoDuplaEsquerda(n);
                     }
                 }
-            }
+            
         }            
         return n;
     }

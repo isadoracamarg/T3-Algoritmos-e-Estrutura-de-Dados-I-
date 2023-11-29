@@ -26,8 +26,13 @@ public class App {
         a.add(1);
 
         System.out.println("Elementos da árvore: \n" + a.positionsCentral());
+
+        System.out.println("Contém 1? " + a.contains(1));
+        System.out.println("Contém 9? " + a.contains(9));
+        System.out.println("Contém 10? " + a.contains(10));
         
         AVLTree clone = a.clone();
+        System.out.println("Altura do clone: " + a.height());
         clone.GeraDOT(); 
      }
 }
