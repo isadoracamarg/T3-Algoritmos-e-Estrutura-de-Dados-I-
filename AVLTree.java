@@ -217,7 +217,12 @@ public class AVLTree{
         }            
         return n;
     }
-
+    
+    /**
+     * Método que faz uma rotação simples, para a direita, para balancear a árvore.
+     * @param n nodo desbalanceado.
+     * @return filho direito do nodo "n".
+     */
     public Node rotacaoSimplesDireita(Node n) {
         Node filhoDireito = n.right;
         Node filhoDoFilhoDireito = null;
@@ -248,6 +253,11 @@ public class AVLTree{
         return n;
     }
     
+    /**
+     * Método que faz uma rotação simples, para a esquerda, para balancear a árvore.
+     * @param n nodo desbalanceado.
+     * @return filho esquerdo do nodo "n".
+     */
     public Node rotacaoSimplesEsquerda(Node n) {
         Node filhoEsquerdo = n.left;
         Node filhoDoFilhoEsquerdo = null;
@@ -278,6 +288,13 @@ public class AVLTree{
         return n;
     }
     
+    /**
+     * Método que faz uma rotação dupla para a direita.
+     * Ou seja, alinha os nodos para conseguir fazer uma rotação simples para 
+     * a direita.
+     * @param n nodo desbalanceado.
+     * @return rotacaoSimplesDireita(n) = filho direito do nodo "n".
+     */
     public Node rotacaoDuplaDireita(Node n) {
         Node filhoDireito = n.right;
         Node filhoDoFIlhoDireito = n.right.left;
@@ -289,6 +306,13 @@ public class AVLTree{
         return rotacaoSimplesDireita(n);
     }
 
+    /**
+     * Método que faz uma rotação dupla para a esquerda.
+     * Ou seja, alinha os nodos para conseguir fazer uma rotação simples para 
+     * a esquerda.
+     * @param n nodo desbalanceado.
+     * @return rotacaoSimplesEsquerda(n) = filho esquerdo do nodo "n".
+     */
     public Node rotacaoDuplaEsquerda(Node n) {
         Node filhoEsquerdo = n.left;
         Node filhoDoFIlhoEsquerdo = n.left.right;
