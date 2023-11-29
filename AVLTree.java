@@ -12,7 +12,7 @@ public class AVLTree{
             left = null;
             right = null;
             this.element = element;
-            this.balance = balance;
+            balance = 0;
         }
     }
     
@@ -32,6 +32,7 @@ public class AVLTree{
     public void add(Integer element) {
         root = add(root, element, null);
         count++;
+        verificaBalanceamento(root);
     }
     private Node add(Node n, Integer element, Node father) {
         if (n == null) { // insere
@@ -147,45 +148,15 @@ public class AVLTree{
         return calculoHeight(root);
     }
 
-    private int calculoHeight (Node n){
+    private int calculoHeight(Node n) {
         if (n == null) {
             return -1; // para árvore vazia
         }
-        if (n.left == null && n.right == null) { // se não tiver filhos
-            return 0;
-        }
-        int alturaLeft = 0;
-        if (n.left != null && n.right == null){
-            alturaLeft = 1 + calculoHeight(n.left);
-        }
-        int alturaRight = 0;
-        if (n.left == null && n.right != null){
-            alturaRight = 1 + calculoHeight(n.right);
-        }
-        return alturaLeft + alturaRight;
-    }
-
-    /**
-     * Método para calcular a quantidade/altura dos nodos de uma árvore/subárvore.
-     * @return quantidade/altura dos nodos de uma árvore/subárvore.
-     */
-    public int countNodos(){
-        return calculoNodos(root);
-    }
-
-    private int calculoNodos (Node n){
-        if (n.left == null && n.right == null) { // se não tiver filhos
-            return 1;
-        }
-        int alturaLeft = 0;
-        if (n.left != null && n.right == null){
-            alturaLeft = 1 + calculoNodos(n.left);
-        }
-        int alturaRight = 0;
-        if (n.left == null && n.right != null){
-            alturaRight = 1 + calculoNodos(n.right);
-        }
-        return alturaLeft + alturaRight;
+    
+        int alturaLeft = calculoHeight(n.left);
+        int alturaRight = calculoHeight(n.right);
+    
+        return 1 + Math.max(alturaLeft, alturaRight);
     }
 
     /**
@@ -197,11 +168,11 @@ public class AVLTree{
         if (n.right == null && n.left == null) {
             n.balance = 0;
         } else if (n.right != null && n.left == null) {
-            n.balance = calculoNodos(n.right) - 0;
+            n.balance = calculoHeight(n.right) - 0;
         } else if (n.right == null && n.left != null) {
-            n.balance = 0 - calculoNodos(n.left);
+            n.balance = 0 - calculoHeight(n.left);
         } else {
-            n.balance = calculoNodos(n.right) - calculoNodos(n.left);
+            n.balance = calculoHeight(n.right) - calculoHeight(n.left);
         }
         if(n.left != null){
             calculaBalanceamento(n.left); 
@@ -217,9 +188,13 @@ public class AVLTree{
      * @return a rotação adequada para cada nodo ficar balanceado.
      */
     public Node verificaBalanceamento(Node n) {
+        if (n == null) {
+            return null;
+        }
         if(n.right != null){
             n.right= verificaBalanceamento(n.right);
         }
+        calculaBalanceamento(n);
         if(n.left != null){
             n.left= verificaBalanceamento(n.left);
         }
@@ -245,19 +220,85 @@ public class AVLTree{
     }
 
     public Node rotacaoSimplesDireita(Node n) {
+        Node filhoDireito = n.right;
+        Node filhoDoFilhoDireito = null;
+        
+        if (n.right != null) {
+            if (n.right.left != null) {
+                filhoDoFilhoDireito = n.right.left;
+                filhoDoFilhoDireito.father = n;
+            }
+            
+            filhoDireito.father = n.father;
+            if (n.father != null) {
+                if (n == n.father.left) {
+                    n.father.left = filhoDireito;
+                } else {
+                    n.father.right = filhoDireito;
+                }
+            } else {
+                root = filhoDireito;
+            }
+            
+            filhoDireito.left = n;
+            n.father = filhoDireito;
+            n.right = filhoDoFilhoDireito;
+    
+            return filhoDireito;
+        }
         return n;
     }
-
+    
     public Node rotacaoSimplesEsquerda(Node n) {
+        Node filhoEsquerdo = n.left;
+        Node filhoDoFilhoEsquerdo = null;
+    
+        if (n.left != null) {
+            if (n.left.right != null) {
+                filhoDoFilhoEsquerdo = n.left.right;
+                filhoDoFilhoEsquerdo.father = n;
+            }
+    
+            filhoEsquerdo.father = n.father;
+            if (n.father != null) {
+                if (n == n.father.left) {
+                    n.father.left = filhoEsquerdo;
+                } else {
+                    n.father.right = filhoEsquerdo;
+                }
+            } else {
+                root = filhoEsquerdo;
+            }
+    
+            filhoEsquerdo.right = n;
+            n.father = filhoEsquerdo;
+            n.left = filhoDoFilhoEsquerdo;
+    
+            return filhoEsquerdo;
+        }
         return n;
     }
-
+    
     public Node rotacaoDuplaDireita(Node n) {
-        return n;
+        Node filhoDireito = n.right;
+        Node filhoDoFIlhoDireito = n.right.left;
+        Node novo = filhoDoFIlhoDireito.right;
+
+        filhoDireito.left = novo; 
+        filhoDoFIlhoDireito.right = filhoDireito;
+        n.right = filhoDoFIlhoDireito;
+        return rotacaoSimplesDireita(n);
     }
 
     public Node rotacaoDuplaEsquerda(Node n) {
-        return n;
+        Node filhoEsquerdo = n.left;
+        Node filhoDoFIlhoEsquerdo = n.left.right;
+        Node novo = filhoDoFIlhoEsquerdo.left;
+
+        filhoEsquerdo.right = novo; 
+        filhoDoFIlhoEsquerdo.left = filhoEsquerdo;
+        n.left = filhoDoFIlhoEsquerdo;
+        return rotacaoSimplesEsquerda(n);
     }
 
     /**
