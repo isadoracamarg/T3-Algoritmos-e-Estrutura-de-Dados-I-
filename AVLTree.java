@@ -5,12 +5,14 @@ public class AVLTree{
         public Node left;
         public Node right;
         private Integer element;
+        private int balance;
 
         public Node(Integer element) {
             father = null;
             left = null;
             right = null;
             this.element = element;
+            this.balance = balance;
         }
     }
     
@@ -64,16 +66,14 @@ public class AVLTree{
      * @param element nodo filho.
      * @return nodo pai.
      */
-    public Integer getFather(Integer element){
+    public Integer getParent(Integer element){
         Node aux = searchNode(element, root);
         if (aux == null) {
             return null;
         }
-
         if(aux.left == null){
             return null;
         }
-
         if (aux.right == null) {
             return null;
         }
@@ -140,7 +140,7 @@ public class AVLTree{
     }
 
     /**
-     * Método que retorna a altura da árvore.
+     * Método que retorna a altura (nível mais alto) da árvore.
      * @return a altura da árvore.
      */
     public int height(){
@@ -149,17 +149,115 @@ public class AVLTree{
 
     private int calculoHeight (Node n){
         if (n == null) {
+            return -1; // para árvore vazia
+        }
+        if (n.left == null && n.right == null) { // se não tiver filhos
             return 0;
         }
         int alturaLeft = 0;
-        if(n.left != null && n.right == null){
+        if (n.left != null && n.right == null){
             alturaLeft = 1 + calculoHeight(n.left);
         }
         int alturaRight = 0;
-        if(n.left == null && n.right != null){
+        if (n.left == null && n.right != null){
             alturaRight = 1 + calculoHeight(n.right);
         }
         return alturaLeft + alturaRight;
+    }
+
+    /**
+     * Método para calcular a quantidade/altura dos nodos de uma árvore/subárvore.
+     * @return quantidade/altura dos nodos de uma árvore/subárvore.
+     */
+    public int countNodos(){
+        return calculoNodos(root);
+    }
+
+    private int calculoNodos (Node n){
+        if (n.left == null && n.right == null) { // se não tiver filhos
+            return 1;
+        }
+        int alturaLeft = 0;
+        if (n.left != null && n.right == null){
+            alturaLeft = 1 + calculoNodos(n.left);
+        }
+        int alturaRight = 0;
+        if (n.left == null && n.right != null){
+            alturaRight = 1 + calculoNodos(n.right);
+        }
+        return alturaLeft + alturaRight;
+    }
+
+    /**
+     * Método que calcula o balancemento de um nodo.
+     * Se o atributo balance for -2, a esquerda ta pesada. Se for +2, a direita ta pesada.
+     * @param n
+     */
+    public void calculaBalanceamento(Node n) {
+        if (n.right == null && n.left == null) {
+            n.balance = 0;
+        } else if (n.right != null && n.left == null) {
+            n.balance = calculoNodos(n.right) - 0;
+        } else if (n.right == null && n.left != null) {
+            n.balance = 0 - calculoNodos(n.left);
+        } else {
+            n.balance = calculoNodos(n.right) - calculoNodos(n.left);
+        }
+        if(n.left != null){
+            calculaBalanceamento(n.left); 
+        }
+        if(n.right != null){
+            calculaBalanceamento(n.right);
+        }
+    }
+
+    /**
+     * Método que verifica o balanceamento da árvore.
+     * @param n nodo raiz da árvore.
+     * @return a rotação adequada para cada nodo ficar balanceado.
+     */
+    public Node verificaBalanceamento(Node n) {
+        if(n.right != null){
+            n.right= verificaBalanceamento(n.right);
+        }
+        if(n.left != null){
+            n.left= verificaBalanceamento(n.left);
+        }
+        calculaBalanceamento(n);
+        if (n.balance >= 2 || n.balance <= -2) {
+            if (n.balance >= 2) {
+                if (n.balance * n.right.balance > 0) {
+                    return rotacaoSimplesDireita(n);
+                } else {
+                    return rotacaoDuplaDireita(n);
+                }
+            }
+        } else {
+            if (n.balance <= -2) {
+                if (n.balance * n.left.balance > 0) {
+                    return rotacaoSimplesEsquerda(n);
+                } else {
+                    return rotacaoDuplaEsquerda(n);
+                }
+            }
+        }
+        return n;
+    }
+
+    public Node rotacaoSimplesDireita(Node n) {
+        return n;
+    }
+
+    public Node rotacaoSimplesEsquerda(Node n) {
+        return n;
+    }
+
+    public Node rotacaoDuplaDireita(Node n) {
+        return n;
+    }
+
+    public Node rotacaoDuplaEsquerda(Node n) {
+        return n;
     }
 
     /**
